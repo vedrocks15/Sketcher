@@ -5,21 +5,21 @@ import time
 import cv2
  
 def sketch(image):
- g=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
- 
- #to make the image edges more prominent 
- #we clean up the image using gaussian blur & smoothing 
- g_b=cv2.GaussianBlur(g,(5,5),0)
- 
- #after that we apply canny edge detection
- c_e=cv2.Canny(g_b,40,80)
- 
- #invert the binary image
- #mask is the net computed output
- #ret is the true or false stating that the command was executed
- #or not
- #ret,mask=cv2.threshold(c_e,70,255,cv2.THRESH_BINARY_INV)
- return c_e
+	g=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+
+	#to make the image edges more prominent 
+	#we clean up the image using gaussian blur & smoothing 
+	g_b=cv2.GaussianBlur(g,(5,5),0)
+
+	#after that we apply canny edge detection
+	c_e=cv2.Canny(g_b,40,80)
+
+	#invert the binary image
+	#mask is the net computed output
+	#ret is the true or false stating that the command was executed
+	#or not
+	ret,mask=cv2.threshold(c_e,70,255,cv2.THRESH_BINARY_INV)
+	return c_e
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
