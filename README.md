@@ -12,3 +12,7 @@ For getting the opencv library to setup on raspberry buster (latest while I comi
 The code is a simple sketch and all the functions used in it our explained in the readme file attched in the master directory.
 
 ## Sample Output
+Sample 1
+![Sample 1 ](https://github.com/vedrocks15/Sketcher/blob/master/Output/IMG_20191227_162325__01.jpg)
+Sample 2
+![Sample 2 ](https://github.com/vedrocks15/Sketcher/blob/master/Output/IMG_20191227_162407__01.jpg)
