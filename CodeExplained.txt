@@ -1,0 +1,43 @@
+The code is well commented at every point but the code progression is explained here for further details.
+
+The libraries we have made use of are :
+ 1)piCamera : allows us to make use of raspi cam with well defined functions.Its installation and functions can be found on https://picamera.readthedocs.io/en/release-1.13/
+ 2)time     : built in python library
+ 3)cv2      : opencv functions
+ 
+We call the PiCamera() constructor to create a camera object and the resoultion is specified. The resolution values for the raspi
+camera can be easily found in its documentation. Due to the resource constraint nature a less resoultion helps us to achieve
+a good frame rate. 0.1 second sleep is quite essential for camera warmup.
+rawCapture is the essential variable that allows us to create the intiall h*w*3 i.e. 640x480x3 frame.
+
+A video is nothing but continuous capturing of images therefore we run the camera.capture_continuous() function provided by piCamera 
+library in continous for loop until the user enters - 'q' character.
+We extract each frame captured as "frame.array" & apply our main sketch() function.
+
+sketch():
+ This is the main component of the code.
+ The first step is to convert the color image to grayscale image becuase it reduces the time of code execution (raspi constraints and
+ processing 1 channel is much more faster as compared to 3 channel processing). Due to this step we can also make use of a NoIR camera.
+ (Noise reduction step) Apply Gauss blur filter to reduce noise in image becuase canny edge detection can capture noise as an edge.
+ We apply the main edge detection algorithm Canny():
+  An edge is detected when there is a sudden change in intensity of pixels in the image, this sudden change can be easily computed 
+  by image smoothining i.e. apply sobel filter/kernel in both x & y direction. This gives us 2 images using which we compute 2 parameters
+  of gradient vector:
+   ->magnitude = sqrt(x^2+y^2)
+   ->direction = atan(x/y)
+   **Note the direction of the gradient vector would be 90 degrees to the actual edge.
+   
+   After getting the gradients non-maximum supression is applied i.e. all non-edge based points are removed. A pixel is compared with its surroundings
+   and if its gradient value is a local maximum there then it could be an edge. 
+   
+   The 2 arguments specified in cv2.Canny(img,low_thresh,high_thresh) :
+   ->low_thresh  : edges having gradient less than this are not edges and vice-versa for other argument.
+   The gradients in between are classified as edges if they are connected to sure edges or else they are not edges.
+   
+ At last canny returns an image with white edges and black background, therefore to add a sketchy feeling a threshold() is applied
+ which converts all the pixels below a limit are darkened and remaining are lightened i.e. dark pencil sketch over white background.
+ 
+ Based on the illumination of the environment we can modify the low and high thresh to make more or less sketchy images. There is no fixed pattern of modification
+ of these 2 variables to get a sketchy image.
+   
+  
